@@ -140,34 +140,7 @@ st.markdown("""
         margin-top: 0.5rem !important;
     }
 
-    /* Header IELTS tối giản kiểu ChatGPT bar */
-    .top-bar {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid rgba(128, 128, 128, 0.12);
-        margin-bottom: 1.25rem;
-    }
 
-    .ielts-badge {
-        background: #e01a22;
-        color: #ffffff;
-        font-weight: 900;
-        font-size: 0.95rem;
-        padding: 3px 8px;
-        border-radius: 6px;
-        letter-spacing: 1px;
-    }
-
-    .model-badge {
-        background: rgba(128, 128, 128, 0.12);
-        font-size: 0.8rem;
-        padding: 2px 10px;
-        border-radius: 9999px;
-        color: gray;
-        font-weight: 500;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -206,14 +179,6 @@ with st.sidebar:
     st.markdown("- 📖 **LR**: Lexical Resource")
     st.markdown("- ⚖️ **GRA**: Grammatical Range & Accuracy")
 
-# Top bar tối giản
-st.markdown("""
-<div class="top-bar">
-    <span class="ielts-badge">IELTS</span>
-    <span style="font-weight: 700; font-size: 1.1rem;">Writing Assistant</span>
-    <span class="model-badge">gemini-3.5-flash-lite</span>
-</div>
-""", unsafe_allow_html=True)
 
 # Màn hình chào mừng phong cách OpenAI ChatGPT khi chưa có tin nhắn
 if len(st.session_state.messages) == 0:
