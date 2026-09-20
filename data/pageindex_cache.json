@@ -1,0 +1,114 @@
+{
+  "legal/ielts_writing_examiner_feedback_criteria.md": {
+    "doc_id": "pi_doc_001",
+    "filename": "ielts_writing_examiner_feedback_criteria.md",
+    "title": "Ielts Writing Examiner Feedback Criteria",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\legal\\ielts_writing_examiner_feedback_criteria.md",
+    "doc_type": "legal"
+  },
+  "legal/ielts_writing_model_answers_assessment.md": {
+    "doc_id": "pi_doc_002",
+    "filename": "ielts_writing_model_answers_assessment.md",
+    "title": "Ielts Writing Model Answers Assessment",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\legal\\ielts_writing_model_answers_assessment.md",
+    "doc_type": "legal"
+  },
+  "legal/ielts_writing_task1_band_descriptors.md": {
+    "doc_id": "pi_doc_003",
+    "filename": "ielts_writing_task1_band_descriptors.md",
+    "title": "Ielts Writing Task1 Band Descriptors",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\legal\\ielts_writing_task1_band_descriptors.md",
+    "doc_type": "legal"
+  },
+  "legal/ielts_writing_task2_band_descriptors.md": {
+    "doc_id": "pi_doc_004",
+    "filename": "ielts_writing_task2_band_descriptors.md",
+    "title": "Ielts Writing Task2 Band Descriptors",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\legal\\ielts_writing_task2_band_descriptors.md",
+    "doc_type": "legal"
+  },
+  "news/article_01.md": {
+    "doc_id": "pi_doc_005",
+    "filename": "article_01.md",
+    "title": "Article 01",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_01.md",
+    "doc_type": "news"
+  },
+  "news/article_02.md": {
+    "doc_id": "pi_doc_006",
+    "filename": "article_02.md",
+    "title": "Article 02",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_02.md",
+    "doc_type": "news"
+  },
+  "news/article_03.md": {
+    "doc_id": "pi_doc_007",
+    "filename": "article_03.md",
+    "title": "Article 03",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_03.md",
+    "doc_type": "news"
+  },
+  "news/article_04.md": {
+    "doc_id": "pi_doc_008",
+    "filename": "article_04.md",
+    "title": "Article 04",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_04.md",
+    "doc_type": "news"
+  },
+  "news/article_05.md": {
+    "doc_id": "pi_doc_009",
+    "filename": "article_05.md",
+    "title": "Article 05",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_05.md",
+    "doc_type": "news"
+  },
+  "news/article_06.md": {
+    "doc_id": "pi_doc_010",
+    "filename": "article_06.md",
+    "title": "Article 06",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_06.md",
+    "doc_type": "news"
+  },
+  "news/article_07.md": {
+    "doc_id": "pi_doc_011",
+    "filename": "article_07.md",
+    "title": "Article 07",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_07.md",
+    "doc_type": "news"
+  },
+  "news/article_08.md": {
+    "doc_id": "pi_doc_012",
+    "filename": "article_08.md",
+    "title": "Article 08",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_08.md",
+    "doc_type": "news"
+  },
+  "news/article_09.md": {
+    "doc_id": "pi_doc_013",
+    "filename": "article_09.md",
+    "title": "Article 09",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_09.md",
+    "doc_type": "news"
+  },
+  "news/article_10.md": {
+    "doc_id": "pi_doc_014",
+    "filename": "article_10.md",
+    "title": "Article 10",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_10.md",
+    "doc_type": "news"
+  },
+  "news/article_11.md": {
+    "doc_id": "pi_doc_015",
+    "filename": "article_11.md",
+    "title": "Article 11",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_11.md",
+    "doc_type": "news"
+  },
+  "news/article_12.md": {
+    "doc_id": "pi_doc_016",
+    "filename": "article_12.md",
+    "title": "Article 12",
+    "path": "C:\\Users\\Acer\\OneDrive\\Desktop\\Day 8\\K4-L3A-RAG-Pipeline-test\\data\\standardized\\news\\article_12.md",
+    "doc_type": "news"
+  }
+}
