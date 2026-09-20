@@ -1,0 +1,77 @@
+[
+  {
+    "question": "What are the four marking criteria for IELTS Writing Task 2?",
+    "expected_answer": "The four marking criteria for IELTS Writing Task 2 are Task Response, Coherence and Cohesion, Lexical Resource, and Grammatical Range and Accuracy. Each criterion accounts for 25% of the total score.",
+    "expected_context": "WRITING TASK 2: Band Descriptors (public version) Task response Coherence and cohesion Lexical resource Grammatical range and accuracy"
+  },
+  {
+    "question": "How many words at minimum should a candidate write in IELTS Writing Task 1 Academic?",
+    "expected_answer": "A candidate needs to write at least 150 words in IELTS Writing Task 1 Academic.",
+    "expected_context": "The instructions say 'Write at least 150 words'. This means you need to write over 150 words."
+  },
+  {
+    "question": "What percentage of the total writing marks does Writing Task 1 count for?",
+    "expected_answer": "Writing Task 1 counts for about 33% (one-third) of the total writing marks.",
+    "expected_context": "Writing Task 1 counts for about 33% of your writing marks."
+  },
+  {
+    "question": "How long is recommended to spend on IELTS Writing Task 1?",
+    "expected_answer": "It is recommended to spend no more than 20 minutes on IELTS Writing Task 1 out of the 60 minutes total for the writing test.",
+    "expected_context": "You have one hour in total for your whole writing test (both task 1 and task 2). IELTS recommend you spend no more than 20 mins on writing task 1."
+  },
+  {
+    "question": "What are the six common types of charts or diagrams in IELTS Academic Writing Task 1?",
+    "expected_answer": "The six types are Bar Charts, Line Graphs, Tables, Pie Charts, Diagrams (processes or cycles), and Maps.",
+    "expected_context": "Below are the six types of tasks that can appear in IELTS Writing task 1... Bar Charts, Line Graphs, Tables, Pie Charts, Diagrams, Maps"
+  },
+  {
+    "question": "What is required for Task Response to achieve Band 9 in IELTS Writing Task 2?",
+    "expected_answer": "For Band 9 Task Response, the candidate must fully address all parts of the task and present a fully developed position in answer to the question with relevant, fully extended and well supported ideas.",
+    "expected_context": "Band 9 Task response: fully addresses all parts of the task; presents a fully developed position in answer to the question with relevant, fully extended and well supported ideas."
+  },
+  {
+    "question": "What is the descriptor for Lexical Resource at Band 8 in Writing Task 2?",
+    "expected_answer": "At Band 8, the candidate uses a wide range of vocabulary fluently and flexibly to convey precise meanings, skillfully uses uncommon lexical items, but may make rare minor slips in word choice or collocation.",
+    "expected_context": "Band 8 Lexical resource: uses a wide range of vocabulary fluently and flexibly to convey precise meanings; skillfully uses uncommon lexical items but there may be occasional inaccuracies in word choice and collocation"
+  },
+  {
+    "question": "How is paragraphing evaluated at Band 7 in IELTS Writing Task 2 Coherence and Cohesion?",
+    "expected_answer": "At Band 7, the candidate logically sequences information and ideas, manages all aspects of cohesion well, and uses paragraphing sufficiently and appropriately, presenting a clear central topic within each paragraph.",
+    "expected_context": "Band 7 Coherence and cohesion: logically organizes information and ideas; there is clear progression throughout; uses a range of cohesive devices appropriately; presents a clear central topic within each paragraph"
+  },
+  {
+    "question": "What happens if an IELTS Writing Task 2 response is under the recommended word count or off-topic?",
+    "expected_answer": "If the essay is underlength, fails to address all parts of the prompt, or is off-topic, the Task Response score is penalized, often capped at Band 5 or lower depending on the degree of deficiency.",
+    "expected_context": "Band 5 Task response: addresses the task only partially; the format may be inappropriate; expresses a position but the development is not always clear; underlength or limited focus"
+  },
+  {
+    "question": "What is the key difference between an overview and a conclusion in IELTS Writing Task 1?",
+    "expected_answer": "An overview summarizes the main trends, highest or lowest points, or overall stages without detailing individual figures, and is mandatory for Task 1; a conclusion is an opinion or inference not needed in Task 1 reports.",
+    "expected_context": "Writing Task 1 is a report, not an essay. An overview is essential to highlight key trends and main features without concluding opinions."
+  },
+  {
+    "question": "What are common cohesive devices used to link sentences in IELTS essays?",
+    "expected_answer": "Common cohesive devices include transitions, pronoun referencing, conjunctions, and linking phrases such as furthermore, however, consequently, and in addition.",
+    "expected_context": "uses a range of cohesive devices appropriately... skillful use of transitions, conjunctions, and referential pronouns to ensure smooth flow."
+  },
+  {
+    "question": "What grammatical requirements are needed to achieve Band 7 in Grammatical Range and Accuracy?",
+    "expected_answer": "The candidate must use a variety of complex structures, produce frequent error-free sentences, and demonstrate good control of grammar and punctuation with only occasional minor errors.",
+    "expected_context": "Band 7 Grammatical range and accuracy: uses a variety of complex structures; produces frequent error-free sentences; has good control of grammar and punctuation but may make a few errors"
+  },
+  {
+    "question": "Why should candidates avoid using memorized templates or overused idioms in IELTS Writing?",
+    "expected_answer": "Examiners are trained to identify memorized language and cliched idioms, which are penalized because they do not demonstrate authentic lexical flexibility and precision.",
+    "expected_context": "Examiner feedback notes that memorized sentences and unnatural idioms are penalized because they do not demonstrate authentic lexical flexibility."
+  },
+  {
+    "question": "In a Discussion Essay that asks to discuss both views and give your opinion, what must the writer include?",
+    "expected_answer": "The writer must objectively analyze both given viewpoints and clearly state their personal position throughout the essay, supporting all perspectives with relevant explanations or examples.",
+    "expected_context": "Discussion essay expressions: Discuss both views and give your opinion requires addressing both sides equally and presenting a clear opinion throughout the essay."
+  },
+  {
+    "question": "How is the overall Writing band score calculated from Task 1 and Task 2?",
+    "expected_answer": "Task 2 carries twice the weight of Task 1 (Task 2 contributes two-thirds or 66.7%, and Task 1 contributes one-third or 33.3%). The weighted average is computed and rounded to the nearest half or whole band.",
+    "expected_context": "Writing Task 1 counts for about 33% of your writing marks, while Task 2 counts for 66%. The final writing score is a weighted average."
+  }
+]
