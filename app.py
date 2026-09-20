@@ -78,19 +78,45 @@ st.markdown("""
         max-width: 768px !important;
         margin: 0 auto !important;
         border-radius: 30px !important;
-        border: 1.5px solid rgba(128, 128, 128, 0.25) !important;
-        box-shadow: 0 4px 22px rgba(0, 0, 0, 0.08) !important;
-        padding: 4px 8px !important;
+        border: 1.5px solid rgba(128, 128, 128, 0.3) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07) !important;
+        background-color: var(--secondary-background-color) !important;
         transition: all 0.25s ease !important;
     }
 
     [data-testid="stChatInput"]:focus-within {
         border-color: #e01a22 !important;
-        box-shadow: 0 0 0 3px rgba(224, 26, 34, 0.15), 0 6px 26px rgba(0, 0, 0, 0.12) !important;
+        box-shadow: 0 0 0 2px rgba(224, 26, 34, 0.18), 0 6px 24px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* XÓA BỎ HOÀN TOÀN VIỀN BÊN TRONG: Chỉ để duy nhất viền ở phần bo tròn bên ngoài */
+    [data-testid="stChatInput"] > div,
+    [data-testid="stChatInput"] div,
+    [data-testid="stChatInput"] div:focus,
+    [data-testid="stChatInput"] div:focus-within,
+    [data-testid="stChatInput"] textarea,
+    [data-testid="stChatInput"] textarea:focus,
+    [data-testid="stChatInput"] textarea:focus-visible {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
     }
 
     [data-testid="stChatInput"] textarea {
         font-size: 15px !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        padding-left: 16px !important;
+    }
+
+    /* Nút gửi bo tròn dạng hình tròn chuẩn ChatGPT */
+    [data-testid="stChatInput"] button {
+        border-radius: 50% !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        margin-right: 6px !important;
     }
 
     /* Nút tạo chat mới trong Sidebar kiểu ChatGPT */
