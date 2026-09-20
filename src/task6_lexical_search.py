@@ -9,6 +9,8 @@ from rank_bm25 import BM25Okapi
 import numpy as np
 
 CORPUS: list[dict] = []
+_BM25_INDEX = None
+_CACHED_CORPUS_ID = None
 
 
 def build_bm25_index(corpus: list[dict]):
@@ -21,12 +23,32 @@ def build_bm25_index(corpus: list[dict]):
 def lexical_search(query: str, top_k: int = 10) -> list[dict]:
     """Trả về BM25 SearchResult theo score giảm dần."""
     # TODO: Tính BM25 scores và map lại corpus.
-    global CORPUS
+    global CORPUS, _BM25_INDEX, _CACHED_CORPUS_ID
     if not CORPUS:
-        from .task4_chunking_indexing import chunk_documents, load_documents
-        CORPUS = chunk_documents(load_documents())
+        try:
+            from .task4_chunking_indexing import get_collection
+            col = get_collection()
+            data = col.get(include=["documents", "metadatas"])
+            if data and data.get("ids"):
+                CORPUS = [
+                    {
+                        "id": cid,
+                        "content": doc,
+                        "metadata": meta,
+                    }
+                    for cid, doc, meta in zip(data["ids"], data["documents"], data["metadatas"])
+                ]
+        except Exception:
+            pass
+        if not CORPUS:
+            from .task4_chunking_indexing import chunk_documents, load_documents
+            CORPUS = chunk_documents(load_documents())
 
-    bm25 = build_bm25_index(CORPUS)
+    if _BM25_INDEX is None or _CACHED_CORPUS_ID != id(CORPUS):
+        _BM25_INDEX = build_bm25_index(CORPUS)
+        _CACHED_CORPUS_ID = id(CORPUS)
+
+    bm25 = _BM25_INDEX
     scores = bm25.get_scores(query.lower().split())
 
     # Tie-breaker khi test corpus nhỏ khiến idf = 0

@@ -32,6 +32,8 @@ EMBEDDING_DIM = 1024
 COLLECTION_NAME = "rag_documents"
 
 _MODEL = None
+_GENAI_CLIENT = None
+_OPENAI_CLIENT = None
 
 
 def embed_texts(texts: list[str]) -> list[list[float]]:
@@ -41,9 +43,12 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
     # from sentence_transformers import SentenceTransformer
     # model = SentenceTransformer(EMBEDDING_MODEL)
     # return model.encode(texts).tolist()
+    global _GENAI_CLIENT, _OPENAI_CLIENT, _MODEL
     if EMBEDDING_PROVIDER == "gemini":
-        from google import genai
-        client = genai.Client(api_key=os.getenv("GEMINI_API_KEY", ""))
+        if _GENAI_CLIENT is None:
+            from google import genai
+            _GENAI_CLIENT = genai.Client(api_key=os.getenv("GEMINI_API_KEY", ""))
+        client = _GENAI_CLIENT
         model = EMBEDDING_MODEL if EMBEDDING_MODEL and "gemini" in EMBEDDING_MODEL else "gemini-embedding-001"
         # Batch into chunks of 50 to respect API limits if needed
         all_vectors = []
@@ -57,13 +62,14 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
                 time.sleep(25)
         return all_vectors
     elif EMBEDDING_PROVIDER == "openai":
-        from openai import OpenAI
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
+        if _OPENAI_CLIENT is None:
+            from openai import OpenAI
+            _OPENAI_CLIENT = OpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
+        client = _OPENAI_CLIENT
         model = EMBEDDING_MODEL if EMBEDDING_MODEL and "text-embedding" in EMBEDDING_MODEL else "text-embedding-3-small"
         res = client.embeddings.create(model=model, input=texts)
         return [item.embedding for item in res.data]
     else:
-        global _MODEL
         if _MODEL is None:
             from sentence_transformers import SentenceTransformer
             _MODEL = SentenceTransformer(EMBEDDING_MODEL)
