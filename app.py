@@ -13,119 +13,134 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom CSS cho phong cách ChatGPT & Theme IELTS với Watermark mờ
+# Custom CSS phong cách OpenAI ChatGPT kết hợp Theme IELTS & Watermark mờ
 st.markdown("""
 <style>
-    /* Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    /* Google Font hiện đại */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* Container chính căn giữa kiểu ChatGPT */
+    /* Container chính độ rộng chuẩn ChatGPT (768px) căn giữa */
     .main .block-container {
-        max-width: 860px;
-        padding-top: 1.5rem;
-        padding-bottom: 7rem;
+        max-width: 768px !important;
+        padding-top: 1.5rem !important;
+        padding-bottom: 7rem !important;
     }
 
-    /* Hình nền mờ Watermark chữ IELTS phong cách học thuật */
+    /* Hình nền mờ Watermark chữ IELTS tinh tế, nhẹ nhàng */
     [data-testid="stAppViewContainer"] {
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" width="1000" height="650"><g fill="none" stroke="%23e01a22" stroke-width="2.5" opacity="0.045"><circle cx="500" cy="270" r="190"/><circle cx="500" cy="270" r="170" stroke-dasharray="8 8"/><path d="M500,105 L500,435 M335,270 L665,270"/></g><text x="50%" y="44%" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="180" fill="%23e01a22" opacity="0.04" letter-spacing="16">IELTS</text><text x="50%" y="58%" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="28" fill="%23002f6c" opacity="0.04" letter-spacing="14">WRITING ASSISTANT</text></svg>');
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600"><text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="160" fill="%23e01a22" opacity="0.03" letter-spacing="18">IELTS</text><text x="50%" y="64%" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="24" fill="%23002f6c" opacity="0.025" letter-spacing="12">WRITING ASSISTANT</text></svg>');
         background-repeat: no-repeat;
-        background-position: center 40%;
+        background-position: center 42%;
         background-attachment: fixed;
-        background-size: 780px auto;
+        background-size: 720px auto;
     }
 
     /* Chat message container kiểu ChatGPT */
     [data-testid="stChatMessage"] {
-        padding: 1.1rem 1.4rem !important;
-        border-radius: 18px !important;
+        padding: 0.6rem 0.8rem !important;
+        border-radius: 20px !important;
         margin-bottom: 1.25rem !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        background: rgba(255, 255, 255, 0.02) !important;
-        backdrop-filter: blur(8px);
-        transition: all 0.2s ease;
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
     }
 
-    /* Phân biệt bong bóng chat của User (viền đỏ IELTS nhẹ) */
+    /* Khung chat của User: Bo tròn dạng viên thuốc (Pill bubble) chuẩn OpenAI */
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
-        background: rgba(224, 26, 34, 0.06) !important;
-        border: 1px solid rgba(224, 26, 34, 0.22) !important;
+        background-color: rgba(128, 128, 128, 0.1) !important;
+        border-radius: 24px !important;
+        padding: 10px 18px !important;
+        max-width: 82% !important;
+        margin-left: auto !important;
+        border: 1px solid rgba(224, 26, 34, 0.15) !important;
     }
 
-    /* Khung nhập liệu ChatGPT thanh thoát ở đáy màn hình */
+    /* Khung chat của Assistant: Canvas phẳng thoáng, chữ rõ ràng không viền như ChatGPT */
+    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
+        background-color: transparent !important;
+        border: none !important;
+        padding: 8px 4px !important;
+        max-width: 100% !important;
+    }
+
+    /* Avatar bo tròn tinh tế */
+    [data-testid="stChatMessageAvatar"] {
+        border-radius: 50% !important;
+        overflow: hidden !important;
+    }
+
+    /* Khung nhập liệu (Chat Input) bo tròn viên thuốc kiểu OpenAI ChatGPT */
     [data-testid="stChatInput"] {
-        border-radius: 28px !important;
-        border: 1.5px solid rgba(224, 26, 34, 0.35) !important;
-        box-shadow: 0 6px 28px rgba(0, 0, 0, 0.22) !important;
+        max-width: 768px !important;
+        margin: 0 auto !important;
+        border-radius: 30px !important;
+        border: 1.5px solid rgba(128, 128, 128, 0.25) !important;
+        box-shadow: 0 4px 22px rgba(0, 0, 0, 0.08) !important;
+        padding: 4px 8px !important;
         transition: all 0.25s ease !important;
     }
 
     [data-testid="stChatInput"]:focus-within {
         border-color: #e01a22 !important;
-        box-shadow: 0 0 0 3px rgba(224, 26, 34, 0.2), 0 8px 30px rgba(0, 0, 0, 0.3) !important;
+        box-shadow: 0 0 0 3px rgba(224, 26, 34, 0.15), 0 6px 26px rgba(0, 0, 0, 0.12) !important;
     }
 
-    /* Header IELTS Badge */
-    .ielts-header {
+    [data-testid="stChatInput"] textarea {
+        font-size: 15px !important;
+    }
+
+    /* Nút tạo chat mới trong Sidebar kiểu ChatGPT */
+    .stButton > button {
+        border-radius: 22px !important;
+        border: 1px solid rgba(128, 128, 128, 0.25) !important;
+        font-weight: 600 !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .stButton > button:hover {
+        border-color: #e01a22 !important;
+        color: #e01a22 !important;
+    }
+
+    /* Expander nguồn trích dẫn bo tròn gọn gàng */
+    [data-testid="stExpander"] {
+        border-radius: 14px !important;
+        border: 1px solid rgba(128, 128, 128, 0.18) !important;
+        overflow: hidden !important;
+        margin-top: 0.5rem !important;
+    }
+
+    /* Header IELTS tối giản kiểu ChatGPT bar */
+    .top-bar {
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin-bottom: 0.25rem;
+        gap: 10px;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.12);
+        margin-bottom: 1.25rem;
     }
 
     .ielts-badge {
-        background: linear-gradient(135deg, #e01a22, #c8102e);
+        background: #e01a22;
         color: #ffffff;
         font-weight: 900;
-        font-size: 1.15rem;
-        padding: 4px 12px;
+        font-size: 0.95rem;
+        padding: 3px 8px;
         border-radius: 6px;
-        letter-spacing: 1.5px;
-        box-shadow: 0 2px 10px rgba(224, 26, 34, 0.35);
+        letter-spacing: 1px;
     }
 
-    .ielts-title {
-        font-size: 1.5rem;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-    }
-
-    .ielts-pill {
-        background: rgba(34, 197, 94, 0.12);
-        color: #4ade80;
-        border: 1px solid rgba(34, 197, 94, 0.25);
-        font-size: 0.75rem;
+    .model-badge {
+        background: rgba(128, 128, 128, 0.12);
+        font-size: 0.8rem;
         padding: 2px 10px;
         border-radius: 9999px;
-        font-weight: 600;
-    }
-
-    /* Cards gợi ý câu hỏi ban đầu */
-    .suggestion-card {
-        padding: 1rem;
-        border-radius: 14px;
-        border: 1px solid rgba(224, 26, 34, 0.2);
-        background: rgba(224, 26, 34, 0.03);
-        margin-bottom: 0.75rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .suggestion-card:hover {
-        border-color: #e01a22;
-        background: rgba(224, 26, 34, 0.08);
-        transform: translateY(-2px);
-    }
-
-    /* Expander trích dẫn nguồn */
-    .streamlit-expanderHeader {
-        font-size: 0.9rem !important;
-        font-weight: 600 !important;
-        border-radius: 10px !important;
+        color: gray;
+        font-weight: 500;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -134,30 +149,25 @@ st.markdown("""
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-if "prompt_to_submit" not in st.session_state:
-    st.session_state.prompt_to_submit = None
-
-# Sidebar cấu hình và tra cứu
+# Sidebar cấu hình kiểu ChatGPT
 with st.sidebar:
     st.markdown("""
     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-        <span style="background: #e01a22; color: white; font-weight: 900; font-size: 1.1rem; padding: 3px 10px; border-radius: 5px;">IELTS</span>
-        <span style="font-size: 1.25rem; font-weight: 700;">Writing Lab</span>
+        <span style="background: #e01a22; color: white; font-weight: 900; font-size: 1.05rem; padding: 2px 8px; border-radius: 4px;">IELTS</span>
+        <span style="font-size: 1.15rem; font-weight: 700;">Writing Lab</span>
     </div>
     """, unsafe_allow_html=True)
 
-    # Nút tạo hội thoại mới kiểu ChatGPT
-    if st.button("➕ Cuộc trò chuyện mới", use_container_width=True):
+    if st.button("➕ Đoạn chat mới", use_container_width=True):
         st.session_state.messages = []
-        st.session_state.prompt_to_submit = None
         st.rerun()
 
-    st.caption("Trợ lý tra cứu tiêu chí Band Descriptors, kỹ thuật viết Task 1 & Task 2.")
+    st.caption("Trợ lý tra cứu tiêu chí Band Descriptors & bài mẫu IELTS Writing.")
     st.divider()
 
     top_k = st.slider("Số chunks truy xuất (top_k)", 3, 10, 5)
 
-    st.markdown("**Kiến trúc RAG tối ưu:**")
+    st.markdown("**Kiến trúc RAG:**")
     st.markdown("- 🚀 **LLM**: `gemini-3.5-flash-lite` *(Streaming ~1.2s)*")
     st.markdown("- 🔍 **Dense**: `gemini-embedding-001` *(3072 dims)*")
     st.markdown("- 📑 **Sparse**: BM25 Okapi *(In-Memory Cache)*")
@@ -170,40 +180,28 @@ with st.sidebar:
     st.markdown("- 📖 **LR**: Lexical Resource")
     st.markdown("- ⚖️ **GRA**: Grammatical Range & Accuracy")
 
-# Header chính phong cách IELTS
+# Top bar tối giản
 st.markdown("""
-<div class="ielts-header">
+<div class="top-bar">
     <span class="ielts-badge">IELTS</span>
-    <span class="ielts-title">Writing Assistant</span>
-    <span class="ielts-pill">⚡ Fast RAG v2.0</span>
+    <span style="font-weight: 700; font-size: 1.1rem;">Writing Assistant</span>
+    <span class="model-badge">gemini-3.5-flash-lite</span>
 </div>
 """, unsafe_allow_html=True)
-st.caption("Tra cứu chuẩn xác tiêu chí chấm điểm Band 1.0 – 9.0, cấu trúc bài viết và bài mẫu chuẩn IELTS.")
 
-# Nếu chưa có tin nhắn nào, hiển thị màn hình chào mừng & 4 thẻ gợi ý câu hỏi phong cách ChatGPT
+# Màn hình chào mừng phong cách OpenAI ChatGPT khi chưa có tin nhắn
 if len(st.session_state.messages) == 0:
-    st.markdown("<br>", unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
+    st.markdown("""
+    <div style="text-align: center; margin-top: 5rem; margin-bottom: 3rem;">
+        <div style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: linear-gradient(135deg, #e01a22, #b91c1c); border-radius: 50%; box-shadow: 0 4px 16px rgba(224, 26, 34, 0.25); margin-bottom: 14px;">
+            <span style="color: white; font-size: 26px;">✍️</span>
+        </div>
+        <h2 style="font-size: 1.55rem; font-weight: 700; margin-bottom: 6px;">Hôm nay bạn muốn luyện IELTS Writing gì?</h2>
+        <p style="color: gray; font-size: 0.95rem; max-width: 500px; margin: 0 auto;">Tra cứu chuẩn xác tiêu chí chấm điểm Band 1.0 – 9.0, cấu trúc bài viết Task 1, Task 2 và chiến lược phòng thi.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    with col1:
-        if st.button("📊 **Task 1: Cấu trúc Overview chuẩn**\n\nCách viết đoạn tổng quan ăn trọn điểm Task 1?", use_container_width=True):
-            st.session_state.prompt_to_submit = "Cách viết đoạn Overview trong IELTS Writing Task 1 để đạt điểm cao là gì?"
-            st.rerun()
-
-        if st.button("🎯 **Task 2: Tiêu chí Band 7 Task Response**\n\nYêu cầu phát triển luận điểm và lập trường?", use_container_width=True):
-            st.session_state.prompt_to_submit = "Tiêu chí Task Response Band 7 trong IELTS Writing Task 2 gồm những gì?"
-            st.rerun()
-
-    with col2:
-        if st.button("⏱️ **Chiến lược quản lý 60 phút**\n\nPhân bổ thời gian 20p Task 1 và 40p Task 2 hợp lý?", use_container_width=True):
-            st.session_state.prompt_to_submit = "Chiến lược phân bổ 60 phút cho IELTS Writing Task 1 và Task 2 hiệu quả nhất?"
-            st.rerun()
-
-        if st.button("✍️ **Các dạng bài kinh điển Task 2**\n\nCấu trúc 5 dạng bài Opinion, Discussion, Problem...?", use_container_width=True):
-            st.session_state.prompt_to_submit = "Có các dạng bài luận nào trong IELTS Writing Task 2 và cấu trúc làm bài từng dạng?"
-            st.rerun()
-
-# Hiển thị lịch sử hội thoại
+# Hiển thị lịch sử hội thoại kiểu ChatGPT
 for message in st.session_state.messages:
     avatar = "👤" if message["role"] == "user" else "✍️"
     with st.chat_message(message["role"], avatar=avatar):
@@ -216,15 +214,8 @@ for message in st.session_state.messages:
                     st.markdown(f"**[{idx}] {meta.get('title', 'Tài liệu')}** (Nguồn: `{meta.get('source', '')}` | Score: `{src.get('score', 0):.4f}`)")
                     st.caption(src.get("content", ""))
 
-# Nhận câu hỏi từ input hoặc thẻ gợi ý
-user_input = st.chat_input("Nhập câu hỏi về IELTS Writing (ví dụ: Tiêu chí Band 7 Task 2 gồm những gì?)...")
-
-query = None
-if st.session_state.prompt_to_submit:
-    query = st.session_state.prompt_to_submit
-    st.session_state.prompt_to_submit = None
-elif user_input:
-    query = user_input
+# Thanh chat input bo tròn phong cách OpenAI
+query = st.chat_input("Hỏi bất cứ điều gì về IELTS Writing (ví dụ: Tiêu chí Band 7 Task 2 gồm những gì?)...")
 
 if query:
     st.session_state.messages.append({"role": "user", "content": query})
