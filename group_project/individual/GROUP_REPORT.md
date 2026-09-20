@@ -16,9 +16,9 @@
 
 | STT | Họ và tên | Mã học viên | Vai trò | Phân công nhiệm vụ chính | Trạng thái |
 | :-: | :--- | :---: | :--- | :--- | :-: |
-| 1 | **Nguyễn Thành Duy** | **2A202602804** | Trưởng nhóm (Leader) / System Architect | - Pipeline hợp nhất và Fallback logic (Task 8, 9)<br>- Generation có Citation & Safe Refusal (Task 10)<br>- Phát triển giao diện Chatbot Streamlit (`app.py`)<br>- Tích hợp hệ thống và quản lý cấu hình chung | **100% (Done)** |
-| 2 | **Trương Việt Anh** | **2A202602444** | Data Engineer | - Thu thập 4 tài liệu PDF chính thức (Task 1)<br>- Crawl 6 bài viết chuyên sâu từ IELTS Liz (Task 2)<br>- Chuẩn hóa toàn bộ dữ liệu sang Markdown (Task 3)<br>- Kiểm thử bộ dữ liệu thô và dữ liệu chuẩn hóa | **100% (Done)** |
-| 3 | **Nguyễn Vũ Anh** | **2A202602502** | Vector DB & Semantic Search Specialist | - Chiến lược phân đoạn Recursive Character Splitter (Task 4)<br>- Tích hợp Gemini Embedding API kiểm soát rate-limit (Task 4)<br>- Thiết lập ChromaDB persistent collection cosine distance (Task 4)<br>- Triển khai Dense Semantic Search (Task 5) | **100% (Done)** |
+| 1 | **Nguyễn Vũ Anh** | **2A202602502** | Trưởng nhóm (Leader) / System Architect | - Pipeline hợp nhất và Fallback logic (Task 8, 9)<br>- Generation có Citation & Safe Refusal (Task 10)<br>- Phát triển giao diện Chatbot Streamlit (`app.py`)<br>- Tích hợp hệ thống, quản lý cấu hình chung và viết báo cáo nhóm | **100% (Done)** |
+| 2 | **Nguyễn Thành Duy** | **2A202602804** | Data Engineer | - Thu thập 4 tài liệu PDF chính thức (Task 1)<br>- Crawl 12 bài viết chuyên sâu từ IELTS Liz (Task 2)<br>- Chuẩn hóa toàn bộ dữ liệu sang Markdown (Task 3)<br>- Quản lý và kiểm thử dữ liệu thô và dữ liệu chuẩn hóa trong `data/` | **100% (Done)** |
+| 3 | **Trương Việt Anh** | **2A202602444** | Vector DB & Semantic Search Specialist | - Chiến lược phân đoạn Recursive Character Splitter (Task 4)<br>- Tích hợp Gemini Embedding API kiểm soát rate-limit (Task 4)<br>- Thiết lập ChromaDB persistent collection cosine distance (Task 4)<br>- Triển khai Dense Semantic Search (Task 5) | **100% (Done)** |
 | 4 | **Phạm Quang Đạt** | **2A202602704** | Search Algorithm & Evaluation Specialist | - Thuật toán tìm kiếm từ khóa chính xác BM25Okapi (Task 6)<br>- Thuật toán Reranking Reciprocal Rank Fusion - RRF (Task 7)<br>- Xây dựng bộ Golden Dataset 15 câu Q&A tiếng Việt<br>- Đánh giá thực nghiệm A/B Testing & viết RESULT.md | **100% (Done)** |
 
 ---
@@ -32,9 +32,9 @@ Hệ thống được thiết kế theo kiến trúc 5 tầng tiêu chuẩn côn
        ↓ (Task 1, 2)
 [Landing Data (PDF & JSON)] 
        ↓ (Task 3: MarkItDown)
-[Standardized Markdown (10 docs)] 
+[Standardized Markdown (16 docs)] 
        ↓ (Task 4: Recursive Splitter - 500 chars, overlap 50)
-[167 Chunks] 
+[253 Chunks] 
        ↓ (Task 4: Gemini Embedding - 3072 dim)
 [ChromaDB Vectorstore] 
        ↓ (Task 9: Retrieval Pipeline)

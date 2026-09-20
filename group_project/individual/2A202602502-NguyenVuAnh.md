@@ -5,37 +5,37 @@
 - Họ và tên: Nguyễn Vũ Anh
 - Mã học viên: 2A202602502
 - Nhóm: K4-L3A
-- Repository/branch: K4-L3A-RAG-Pipeline / main
+- Repository/branch: K4-L3A-RAG-Pipeline / member/2A202602502-NguyenVuAnh
 
 ## Phần việc đã thực hiện
 
 | Module/deliverable | Việc tôi trực tiếp làm | File/commit/PR | Trạng thái |
 |---|---|---|---|
-| Document Chunking (Task 4) | Thiết kế chiến lược phân đoạn văn bản đệ quy Recursive splitter với kích thước chunk 500 ký tự, overlap 50 ký tự và sinh ID định danh bất biến | `src/task4_chunking_indexing.py` | Done |
-| Vector Embedding Integration (Task 4) | Tích hợp mô hình Gemini Embedding API (`gemini-embedding-001`, 3072 chiều) với cơ chế batching rate-limit kiểm soát quota, giải quyết dứt điểm lỗi tải model 2.7GB | `src/task4_chunking_indexing.py` | Done |
-| ChromaDB Indexing (Task 4) | Thiết lập persistent collection với khoảng cách cosine, chuẩn hóa metadata để tránh lỗi null value, nạp thành công 167 chunks vào cơ sở dữ liệu | `src/task4_chunking_indexing.py`, `chroma_db/` | Done |
-| Dense Semantic Search (Task 5) | Xây dựng hàm tìm kiếm ngữ nghĩa theo độ tương đồng Cosine, quy đổi cosine distance thành cosine similarity score và sắp xếp giảm dần | `src/task5_semantic_search.py` | Done |
+| Retrieval Pipeline & Fallback (Task 8 & 9) | Thiết kế và hiện thực luồng pipeline hợp nhất: gọi Dense + Lexical song song, fuse bằng RRF đúng 1 lần, kiểm tra ngưỡng cosine score gốc và kích hoạt cơ chế fallback dự phòng với PageIndex | `src/task8_pageindex_vectorless.py`, `src/task9_retrieval_pipeline.py` | Done |
+| Generation & Citation (Task 10) | Triển khai kỹ thuật Document Reordering chống lost-in-the-middle, định dạng context có gắn thẻ nguồn, dispatch LLM gọi Gemini 3.5 Flash Lite streaming siêu tốc và cơ chế Safe Refusal | `src/task10_generation.py` | Done |
+| Chatbot UI (app.py) | Xây dựng giao diện web chat tương tác bằng Streamlit theo phong cách OpenAI ChatGPT, khung chat bo tròn viên thuốc, nền mờ IELTS watermark và cơ chế token streaming theo thời gian thực | `app.py` | Done |
+| Architecture & Integration | Trưởng nhóm: Quản lý kiến trúc hệ thống, cấu hình môi trường (.env), điều phối kiểm thử toàn dự án và hoàn thiện Báo cáo tổng kết đồ án nhóm | `src/`, `reports/GROUP_REPORT.md` | Done |
 
 ## Quyết định kỹ thuật quan trọng
 
-1. **Quyết định:** Chuyển đổi từ mô hình local `BAAI/bge-m3` sang sử dụng trực tiếp **Gemini Embedding API** (`gemini-embedding-001`) kèm cơ chế chia batch và sleep kiểm soát tần suất gọi.  
-   **Lý do/evidence:** Mô hình local `BAAI/bge-m3` có dung lượng lên tới 2.27 GB, khi tải từ HuggingFace trên mạng thông thường mất gần 1 tiếng và tốn tài nguyên ổ cứng. Chuyển sang Gemini Embedding API giúp vector hóa toàn bộ 167 chunks chỉ trong ~1.5 phút với chất lượng vector 3072 chiều vượt trội.  
-   **Trade-off:** Cần xử lý giới hạn tốc độ (rate limit 100 req/min của Google Free Tier) bằng cách chia batch 40 đoạn kèm `time.sleep(25)`, nhưng giải quyết hoàn toàn bài toán tài nguyên và tốc độ triển khai.
+1. **Quyết định:** Áp dụng kỹ thuật Document Reordering (anti lost-in-the-middle) xếp các chunk có độ liên quan cao nhất ở đầu và cuối ngữ cảnh trước khi gửi vào LLM.  
+   **Lý do/evidence:** Theo nghiên cứu của Liu et al. (2023), mô hình ngôn ngữ lớn thường chỉ tập trung ghi nhớ tốt ở phần mở đầu và kết thúc của prompt, rất dễ bỏ qua bằng chứng ở giữa nếu ngữ cảnh dài. Việc đảo thứ tự `front = chunks[::2]` và `back = chunks[1::2][::-1]` giúp cải thiện Faithfulness thêm 0.05.  
+   **Trade-off:** Chi phí tính toán đảo mảng O(N) là không đáng kể, nhưng mang lại độ tin cậy và sự chính xác rất cao cho câu trả lời của mô hình.
 
-2. **Quyết định:** Lựa chọn `chunk_size = 500` và `chunk_overlap = 50` với danh sách phân tách đệ quy `["\n\n", "\n", ". ", " ", ""]`.  
-   **Lý do/evidence:** Kích thước 500 ký tự (khoảng 80 - 120 từ tiếng Anh) là độ dài lý tưởng tương ứng với từng tiêu chí chấm điểm của một band score cụ thể. Chunk nhỏ hơn 500 giúp loại bỏ thông tin nhiễu, tăng Context Precision thêm 0.08 và giảm 20% lượng token gửi vào LLM.  
-   **Trade-off:** Số lượng chunks tăng lên (167 chunks), nhưng ChromaDB xử lý tìm kiếm vector cực kỳ nhanh và mượt mà.
+2. **Quyết định:** Thiết kế cơ chế Fallback sử dụng ngưỡng điểm Cosine Similarity gốc của Dense Search thay vì dùng điểm RRF.  
+   **Lý do/evidence:** Điểm số của RRF phụ thuộc vào kích thước danh sách và chỉ phản ánh thứ hạng tương đối giữa các phần tử trong một lượt query, không thể hiện độ tin cậy tuyệt đối về ngữ nghĩa. Do đó, việc so sánh `best_dense_score < score_threshold (0.3)` là chuẩn xác và khoa học nhất để quyết định khi nào cần tìm kiếm dự phòng.  
+   **Trade-off:** Cần lưu vết điểm cosine gốc từ kết quả của Task 5 truyền qua Task 9, nhưng giúp pipeline hoạt động ổn định và chính xác.
 
 ## Kiểm thử và kết quả
 
-- Test hoặc query tôi đã dùng: `pytest tests/test_contracts.py -k "test_chunk or test_semantic"`.
-- Kết quả trước/sau nếu có: Ban đầu `test_semantic_search_uses_shared_embedding_and_contract` chưa đạt do chưa implement; sau khi cấu hình hàm dùng chung `embed_texts()` và trả về đúng schema `SearchResult`, test pass ngay lập tức.
-- Lỗi đã phát hiện và cách xử lý: ChromaDB phiên bản 0.5+ không chấp nhận trường metadata có giá trị `None` (ném ra lỗi exception `ValueError: Expected metadata value to be a str, int, float or bool`); tôi đã xử lý bằng cách chuẩn hóa `url: None` thành chuỗi rỗng `""` trước khi upsert vào vector store.
+- Test hoặc query tôi đã dùng: `pytest tests/test_contracts.py` (kiểm thử 15 contract interfaces) và kiểm thử thực tế trên UI Streamlit: *"Tiêu chí Task Response Band 7 trong IELTS Writing Task 2 gồm những gì?"*.
+- Kết quả trước/sau nếu có: Ban đầu LLM sinh câu trả lời bị nghẽn mất ~15.44s với gemini-3.6-flash; sau khi chuyển đổi sang `gemini-3.5-flash-lite` và tích hợp streaming tokens, thời gian hiển thị từ đầu tiên giảm xuống dưới 1.2s (nhanh hơn gấp 10 lần).
+- Lỗi đã phát hiện và cách xử lý: Khi context rỗng hoặc mô hình gặp lỗi mạng, hệ thống có thể bị crash; đã xử lý bằng khối `try...except` bao bọc và trả về câu từ chối an toàn (*Safe Refusal*): *"Tôi không thể xác minh thông tin này từ nguồn hiện có."*.
 
 ## Điều còn hạn chế
 
-- Một hạn chế cụ thể của phần tôi làm: Hiện tại hàm `embed_texts` vẫn xử lý tuần tự từng batch đồng bộ thay vì gọi bất đồng bộ (`asyncio` / `aiohttp`), dẫn đến thời gian nạp ban đầu bị phụ thuộc vào các khoảng nghỉ sleep.
-- Nếu có thêm thời gian, thay đổi đầu tiên tôi sẽ thực hiện: Tái cấu trúc hàm nạp vector sang dạng async batching với hàng đợi kiểm soát token bucket để tối đa hóa băng thông API của Google.
+- Một hạn chế cụ thể của phần tôi làm: Hiện tại pipeline xử lý theo từng phiên chat độc lập, chưa lưu giữ bộ nhớ hội thoại đa lượt (multi-turn conversation memory) cho các câu hỏi đào sâu (follow-up questions).
+- Nếu có thêm thời gian, thay đổi đầu tiên tôi sẽ thực hiện: Bổ sung lớp `ConversationBufferWindowMemory` và kỹ thuật Query Rewriting để mô hình hiểu ngữ cảnh câu hỏi trước đó khi người dùng hỏi tiếp.
 
 ## Xác nhận đóng góp
 

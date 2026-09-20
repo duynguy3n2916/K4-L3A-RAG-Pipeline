@@ -5,37 +5,37 @@
 - Họ và tên: Nguyễn Thành Duy
 - Mã học viên: 2A202602804
 - Nhóm: K4-L3A
-- Repository/branch: K4-L3A-RAG-Pipeline / main
+- Repository/branch: K4-L3A-RAG-Pipeline / member/2A202602804-NguyenThanhDuy
 
 ## Phần việc đã thực hiện
 
 | Module/deliverable | Việc tôi trực tiếp làm | File/commit/PR | Trạng thái |
 |---|---|---|---|
-| Retrieval Pipeline & Fallback (Task 8 & 9) | Thiết kế và hiện thực luồng pipeline hợp nhất: gọi song song Dense + Lexical, fuse bằng RRF một lần, kiểm tra ngưỡng cosine score gốc và kích hoạt cơ chế fallback dự phòng với PageIndex | `src/task8_pageindex_vectorless.py`, `src/task9_retrieval_pipeline.py` | Done |
-| Generation & Citation (Task 10) | Triển khai hàm reorder chunks chống hiện tượng lost-in-the-middle, format context có gắn thẻ nhận diện nguồn, dispatch LLM gọi Gemini 3.6 Flash và cơ chế Safe Refusal | `src/task10_generation.py` | Done |
-| Chatbot UI (app.py) | Xây dựng giao diện web chat tương tác bằng Streamlit, thanh điều khiển tham số top_k, lưu lịch sử hội thoại session state và hộp mở rộng xem trích dẫn nguồn | `app.py` | Done |
-| Architecture & Integration | Quản lý kiến trúc hệ thống, cấu hình môi trường (.env), giải quyết xung đột kiểu dữ liệu và điều phối kiểm thử toàn dự án | `src/`, `tests/` | Done |
+| Legal Documents Collection (Task 1) | Nghiên cứu, tuyển chọn và viết script tải 4 tài liệu PDF tiêu chí chấm điểm chính thức từ British Council và Cambridge Assessment (Band Descriptors Task 1 & 2, Examiner Criteria, Model Answers) | `src/task1_collect_legal_docs.py`, `data/landing/legal/` | Done |
+| Web News Crawling (Task 2) | Xây dựng trình thu thập dữ liệu bất đồng bộ với Crawl4AI, cào 12 bài viết chuyên sâu về phương pháp làm bài, từ vựng collocations, tiêu chí chấm và các dạng bài từ chuyên trang IELTS Liz | `src/task2_crawl_news.py`, `data/landing/news/` | Done |
+| Markdown Standardization (Task 3) | Ứng dụng công cụ MarkItDown để chuyển đổi cấu trúc PDF và JSON sang Markdown chuẩn hóa, bảo toàn cấu trúc bảng tiêu chí và gắn đầy đủ metadata phục vụ trích dẫn | `src/task3_convert_markdown.py`, `data/standardized/` | Done |
+| Data Acceptance Verification | Kiểm tra chất lượng dữ liệu thu thập, đảm bảo 16 tài liệu không rỗng, kích thước đạt chuẩn (> 1024 bytes) và độ dài ký tự đạt yêu cầu | `tests/test_acceptance.py` | Done |
 
 ## Quyết định kỹ thuật quan trọng
 
-1. **Quyết định:** Áp dụng kỹ thuật Document Reordering (anti lost-in-the-middle) xếp các chunk có độ liên quan cao nhất ở đầu và cuối ngữ cảnh trước khi gửi vào LLM.  
-   **Lý do/evidence:** Theo nghiên cứu của Liu et al. (2023), mô hình ngôn ngữ lớn thường chỉ tập trung ghi nhớ tốt ở phần mở đầu và kết thúc của prompt, rất dễ bỏ qua bằng chứng ở giữa nếu ngữ cảnh dài. Việc đảo thứ tự `front = chunks[::2]` và `back = chunks[1::2][::-1]` giúp cải thiện Faithfulness thêm 0.05.  
-   **Trade-off:** Chi phí tính toán đảo mảng O(N) là không đáng kể, nhưng mang lại độ tin cậy và sự chính xác rất cao cho câu trả lời của mô hình.
+1. **Quyết định:** Sử dụng công cụ `MarkItDown` để chuyển đổi tài liệu PDF tiêu chí chấm điểm thay vì các thư viện đọc text thuần túy như PyPDF hay pdfminer.  
+   **Lý do/evidence:** Bảng tiêu chuẩn chấm thi IELTS Writing Band Descriptors có cấu trúc bảng đa cột phức tạp (Task Response, Coherence & Cohesion, Lexical Resource, Grammar). Các thư viện text thông thường làm dính các cột chữ vào nhau làm mất ngữ nghĩa. `MarkItDown` giữ lại được định dạng phân cấp Markdown và cấu trúc bảng rõ ràng.  
+   **Trade-off:** Thời gian xử lý file PDF bằng MarkItDown lâu hơn đọc plain text khoảng 1-2 giây cho mỗi tài liệu, nhưng chất lượng văn bản chuẩn hóa đầu ra cao hơn hẳn.
 
-2. **Quyết định:** Thiết kế cơ chế Fallback sử dụng ngưỡng điểm Cosine Similarity gốc của Dense Search thay vì dùng điểm RRF.  
-   **Lý do/evidence:** Điểm số của RRF phụ thuộc vào kích thước danh sách và chỉ phản ánh thứ hạng tương đối giữa các phần tử trong một lượt query, không thể hiện độ tin cậy tuyệt đối về ngữ nghĩa. Do đó, việc so sánh `best_dense_score < score_threshold (0.3)` là chuẩn xác và khoa học nhất để quyết định khi nào cần tìm kiếm dự phòng.  
-   **Trade-off:** Cần lưu vết điểm cosine gốc từ kết quả của Task 5 truyền qua Task 9, nhưng giúp pipeline hoạt động ổn định và chính xác.
+2. **Quyết định:** Thiết kế cấu trúc JSON lưu trữ bài viết cào từ web có schema metadata bắt buộc (`url`, `title`, `date_crawled`, `content_markdown`) và gắn header metadata ở đầu file Markdown.  
+   **Lý do/evidence:** Giúp bảo toàn nguồn gốc xuất xứ của từng tài liệu xuyên suốt từ khâu landing đến khâu trích xuất (retrieval) và sinh trích dẫn (citation) của Task 10.  
+   **Trade-off:** Tăng thêm dung lượng lưu trữ nhỏ cho metadata nhưng thỏa mãn hoàn toàn `test_corpus_has_required_news_with_metadata` và `MODULE_CONTRACTS.md`.
 
 ## Kiểm thử và kết quả
 
-- Test hoặc query tôi đã dùng: `pytest tests/test_contracts.py` (kiểm thử 15 contract interface) và query kiểm thử thực tế trên UI: *"What are the four marking criteria of IELTS Writing Task 2?"*.
-- Kết quả trước/sau nếu có: Ban đầu gặp lỗi `UnicodeEncodeError` khi in tiếng Việt trên console Windows và `NotImplementedError` ở Task 9, Task 10; sau khi sửa toàn bộ contract tests đạt 15/15 PASSED.
-- Lỗi đã phát hiện và cách xử lý: Khi kết nối LLM nếu xảy ra sự cố mạng hoặc context rỗng, hệ thống có thể bị crash; đã xử lý bằng khối `try...except` bao bọc và trả về câu từ chối an toàn (*Safe Refusal*): *"Tôi không thể xác minh thông tin này từ nguồn hiện có."*.
+- Test hoặc query tôi đã dùng: Chạy `pytest tests/test_acceptance.py -k "test_corpus or test_standardized"`.
+- Kết quả trước/sau nếu có: Trước khi hoàn thiện, thư mục `data/` chưa có dữ liệu khiến 3 acceptance test bị FAIL; sau khi hoàn thiện script và thu thập đủ 16 tài liệu (4 PDF + 12 bài viết), cả 3 test dữ liệu đều PASS tuyệt đối (100%).
+- Lỗi đã phát hiện và cách xử lý: Tiêu đề cào về từ web thường dính hậu tố tên trang web (ví dụ ` - IELTS Liz`), đã xử lý bằng chuỗi xử lý `.split(" - IELTS Liz")[0].strip()` để tiêu đề tài liệu được ngắn gọn và sạch sẽ.
 
 ## Điều còn hạn chế
 
-- Một hạn chế cụ thể của phần tôi làm: Hiện tại pipeline chỉ hỗ trợ truy vấn đơn lẻ (single-turn query), chưa lưu giữ ngữ cảnh hội thoại đa lượt (multi-turn conversation memory) cho các câu hỏi follow-up.
-- Nếu có thêm thời gian, thay đổi đầu tiên tôi sẽ thực hiện: Bổ sung lớp `ConversationBufferWindowMemory` để tóm tắt các lượt trao đổi trước đó và tái viết câu hỏi (query rewriting) trước khi đưa vào retrieval.
+- Một hạn chế cụ thể của phần tôi làm: Đối với các bảng số liệu phức tạp trong PDF Task 1 Model Answers, một số ký hiệu bảng đặc biệt vẫn chưa được chuyển đổi thành bảng Markdown Table dạng grid chuẩn.
+- Nếu có thêm thời gian, thay đổi đầu tiên tôi sẽ thực hiện: Tích hợp công cụ Document Intelligence chuyên dụng (như MinerU hoặc Docling) để trích xuất bảng biểu đa cột thành Markdown Table hoàn hảo 100%.
 
 ## Xác nhận đóng góp
 

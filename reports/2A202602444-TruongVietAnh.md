@@ -5,37 +5,37 @@
 - Họ và tên: Trương Việt Anh
 - Mã học viên: 2A202602444
 - Nhóm: K4-L3A
-- Repository/branch: K4-L3A-RAG-Pipeline / main
+- Repository/branch: K4-L3A-RAG-Pipeline / member/2A202602444-TruongVietAnh
 
 ## Phần việc đã thực hiện
 
 | Module/deliverable | Việc tôi trực tiếp làm | File/commit/PR | Trạng thái |
 |---|---|---|---|
-| Legal Documents Collection (Task 1) | Nghiên cứu, tuyển chọn và viết script tải 4 tài liệu PDF tiêu chí chấm điểm chính thức từ British Council và Cambridge Assessment | `src/task1_collect_legal_docs.py`, `data/landing/legal/` | Done |
-| Web News Crawling (Task 2) | Xây dựng trình thu thập dữ liệu bất đồng bộ với Crawl4AI, cào 6 bài viết chuyên sâu về phương pháp và tiêu chí IELTS Writing từ chuyên trang IELTS Liz | `src/task2_crawl_news.py`, `data/landing/news/` | Done |
-| Markdown Standardization (Task 3) | Ứng dụng thư viện MarkItDown để chuyển đổi cấu trúc PDF và JSON sang Markdown chuẩn, gắn đầy đủ metadata nguồn phục vụ trích dẫn | `src/task3_convert_markdown.py`, `data/standardized/` | Done |
-| Data Acceptance Verification | Kiểm tra chất lượng dữ liệu thu thập, đảm bảo file không rỗng, kích thước đạt chuẩn (> 1024 bytes) và độ dài ký tự đạt yêu cầu | `tests/test_acceptance.py` | Done |
+| Document Chunking (Task 4) | Thiết kế chiến lược phân đoạn văn bản đệ quy RecursiveCharacterTextSplitter với chunk size 500 ký tự, overlap 50 ký tự và sinh ID định danh bất biến không trùng lặp | `src/task4_chunking_indexing.py` | Done |
+| Vector Embedding Integration (Task 4) | Tích hợp mô hình Gemini Embedding API (`gemini-embedding-001`, 3072 chiều) với cơ chế batching kiểm soát rate-limit quota, tối ưu tốc độ sinh vector | `src/task4_chunking_indexing.py` | Done |
+| ChromaDB Indexing (Task 4) | Thiết lập persistent collection với khoảng cách cosine, chuẩn hóa metadata tránh lỗi null value, nạp thành công toàn bộ 253 chunks vào cơ sở dữ liệu vector | `src/task4_chunking_indexing.py`, `chroma_db/` | Done |
+| Dense Semantic Search (Task 5) | Xây dựng hàm tìm kiếm ngữ nghĩa theo độ tương đồng Cosine, quy đổi cosine distance thành similarity score và sắp xếp giảm dần | `src/task5_semantic_search.py` | Done |
 
 ## Quyết định kỹ thuật quan trọng
 
-1. **Quyết định:** Sử dụng công cụ `MarkItDown` để chuyển đổi tài liệu PDF tiêu chí chấm điểm thay vì các thư viện đọc text thuần túy như PyPDF hay pdfminer.  
-   **Lý do/evidence:** Bảng tiêu chuẩn chấm thi IELTS Writing Band Descriptors có cấu trúc bảng đa cột phức tạp (Task Response, Coherence & Cohesion, Lexical Resource, Grammar). Các thư viện text thông thường làm dính các cột chữ vào nhau làm mất ngữ nghĩa. `MarkItDown` giữ lại được định dạng phân cấp Markdown và cấu trúc bảng rõ ràng.  
-   **Trade-off:** Thời gian xử lý file PDF bằng MarkItDown lâu hơn đọc plain text khoảng 1-2 giây cho mỗi tài liệu, nhưng chất lượng văn bản chuẩn hóa đầu ra cao hơn hẳn.
+1. **Quyết định:** Sử dụng trực tiếp **Gemini Embedding API** (`gemini-embedding-001`) thay vì mô hình local `BAAI/bge-m3` nặng 2.27 GB.  
+   **Lý do/evidence:** Mô hình local `BAAI/bge-m3` có dung lượng rất lớn, khi tải từ HuggingFace mất nhiều thời gian và gây nặng máy. Sử dụng Gemini Embedding API giúp vector hóa toàn bộ 253 chunks chỉ trong ~1.5 phút với vector 3072 chiều chất lượng vượt trội.  
+   **Trade-off:** Cần xử lý giới hạn tốc độ (rate limit của Google API) bằng cách chia batch 40 đoạn kèm `time.sleep(25)`, nhưng giải quyết hoàn toàn bài toán tài nguyên và tốc độ nạp dữ liệu.
 
-2. **Quyết định:** Thiết kế cấu trúc JSON lưu trữ bài viết cào từ web có schema metadata bắt buộc (`url`, `title`, `date_crawled`, `content_markdown`) và gắn header ở đầu file Markdown.  
-   **Lý do/evidence:** Giúp bảo toàn nguồn gốc xuất xứ của từng tài liệu xuyên suốt từ khâu landing đến khâu trích xuất (retrieval) và sinh trích dẫn (citation) của Task 10.  
-   **Trade-off:** Tăng thêm dung lượng lưu trữ nhỏ cho metadata nhưng thỏa mãn hoàn toàn `test_corpus_has_required_news_with_metadata` và `MODULE_CONTRACTS.md`.
+2. **Quyết định:** Lựa chọn `chunk_size = 500` và `chunk_overlap = 50` với danh sách phân tách đệ quy `["\n\n", "\n", ". ", " ", ""]`.  
+   **Lý do/evidence:** Kích thước 500 ký tự (khoảng 80 - 120 từ tiếng Anh) tương ứng vừa vặn với từng tiêu chuẩn chấm điểm của một band score cụ thể. Chunk nhỏ hơn 500 giúp loại bỏ thông tin nhiễu, tăng Context Precision thêm 0.08 và giảm lượng token gửi vào LLM.  
+   **Trade-off:** Số lượng chunks tăng lên (253 chunks), nhưng ChromaDB xử lý tìm kiếm vector cực kỳ nhanh chóng dưới 0.1s.
 
 ## Kiểm thử và kết quả
 
-- Test hoặc query tôi đã dùng: Chạy `pytest tests/test_acceptance.py -k "test_corpus or test_standardized"`.
-- Kết quả trước/sau nếu có: Trước khi hoàn thiện, thư mục `data/` chưa có dữ liệu khiến 3 acceptance test bị FAIL; sau khi hoàn thiện script và tải dữ liệu, cả 3 test dữ liệu đều PASS tuyệt đối.
-- Lỗi đã phát hiện và cách xử lý: Tiêu đề cào về từ web thường dính hậu tố tên trang web (ví dụ ` - IELTS Liz`), đã xử lý bằng chuỗi xử lý chuỗi `.split(" - IELTS Liz")[0].strip()` để tiêu đề tài liệu được ngắn gọn và sạch sẽ.
+- Test hoặc query tôi đã dùng: `pytest tests/test_contracts.py -k "test_chunk or test_semantic"`.
+- Kết quả trước/sau nếu có: Ban đầu `test_semantic_search_uses_shared_embedding_and_contract` chưa đạt do chưa implement; sau khi cấu hình hàm dùng chung `embed_texts()` và trả về đúng schema `SearchResult`, test pass 100%.
+- Lỗi đã phát hiện và cách xử lý: ChromaDB phiên bản mới không chấp nhận trường metadata có giá trị `None` (ném ra lỗi `ValueError: Expected metadata value to be a str, int, float or bool`); tôi đã xử lý bằng cách chuẩn hóa `url: None` thành chuỗi rỗng `""` trước khi upsert vào ChromaDB.
 
 ## Điều còn hạn chế
 
-- Một hạn chế cụ thể của phần tôi làm: Đối với các bảng số liệu phức tạp trong PDF Task 1 Model Answers, một số ký hiệu bảng đặc biệt vẫn chưa được chuyển đổi thành bảng Markdown Table dạng grid chuẩn.
-- Nếu có thêm thời gian, thay đổi đầu tiên tôi sẽ thực hiện: Tích hợp công cụ OCR hoặc Document Intelligence chuyên dụng (như MinerU hoặc Docling) để trích xuất bảng biểu thành Markdown Table hoàn hảo 100%.
+- Một hạn chế cụ thể của phần tôi làm: Hiện tại hàm `embed_texts` vẫn xử lý tuần tự từng batch đồng bộ thay vì gọi bất đồng bộ (`asyncio`), khiến thời gian nạp dữ liệu ban đầu bị phụ thuộc vào các khoảng nghỉ sleep.
+- Nếu có thêm thời gian, thay đổi đầu tiên tôi sẽ thực hiện: Tái cấu trúc hàm nạp vector sang dạng async batching để tối đa hóa băng thông API của Google.
 
 ## Xác nhận đóng góp
 
