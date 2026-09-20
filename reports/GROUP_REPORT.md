@@ -32,9 +32,9 @@ Hệ thống được thiết kế theo kiến trúc 5 tầng tiêu chuẩn côn
        ↓ (Task 1, 2)
 [Landing Data (PDF & JSON)] 
        ↓ (Task 3: MarkItDown)
-[Standardized Markdown (10 docs)] 
+[Standardized Markdown (16 docs)] 
        ↓ (Task 4: Recursive Splitter - 500 chars, overlap 50)
-[167 Chunks] 
+[253 Chunks] 
        ↓ (Task 4: Gemini Embedding - 3072 dim)
 [ChromaDB Vectorstore] 
        ↓ (Task 9: Retrieval Pipeline)

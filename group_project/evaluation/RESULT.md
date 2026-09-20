@@ -9,7 +9,7 @@
 | Evaluator model                    | gemini-3.6-flash |
 | Generator model                    | gemini-3.6-flash |
 | Embedding model                    | gemini-embedding-001 (3072-dim) / BAAI/bge-m3 |
-| Corpus version/commit              | main (4 legal documents, 6 news articles, 167 chunks) |
+| Corpus version/commit              | main (4 legal documents, 12 news articles, 253 chunks) |
 | Golden dataset size                | 15 test cases (Tiếng Việt) |
 | `top_k`                            | 5 |
 | Fallback threshold and calibration | 0.3 (calibrated against cosine similarity distribution) |
